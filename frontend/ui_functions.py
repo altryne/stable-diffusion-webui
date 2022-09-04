@@ -33,6 +33,12 @@ def toggle_options_realesrgan(selection):
     else:
         return gr.update(visible=False)
 
+def sideload_url_img(*args):
+    try:
+        return [args[0], args[0]]
+    except:
+        return None
+
 def toggle_options_gobig(selection):
     if selection == 1:
         #print(selection)

@@ -164,7 +164,13 @@ def draw_gradio_ui(opt, img2img=lambda x: x, txt2img=lambda x: x,imgproc=lambda 
                         img2img_image_mask = gr.Image(value=sample_img2img, source="upload", interactive=True,
                                                       type="pil", tool="sketch", visible=False,
                                                       elem_id="img2img_mask")
-
+                        img2img_sideload_url = gr.Textbox(visible=True, elem_id='imgtimg_sideload', interactive=True,)
+                        img2img_sideload_button = gr.Button("Sideload", variant="primary", visible=False, elem_id="img2img_sideloadbtn")
+                        img2img_sideload_button.click(fn=uifn.sideload_url_img, 
+                            inputs=[img2img_sideload_url], 
+                            outputs=[img2img_image_editor,
+                             img2img_image_mask])
+                        
                         with gr.Tabs():
                             with gr.TabItem("Editor Options"):
                                 with gr.Row():

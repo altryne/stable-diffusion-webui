@@ -218,11 +218,18 @@ let injectParamsFromUrl = async () => {
   }
 
   if(paramsObj['txt2img_prompt']){
-    getEL('#prompt_input [data-testid="textbox"]').value = paramsObj['img2img_prompt'];
+    let txt2img_prompt = getEL('#prompt_input [data-testid="textbox"]')
+    setNativeValue(txt2img_prompt, paramsObj['txt2img_prompt']);
   }
 
   if(paramsObj['img2img_prompt']){
-    getEL('#img2img_prompt_input [data-testid="textbox"]').value = paramsObj['img2img_prompt'];
+    let img2img_prompt = getEL('#img2img_prompt_input [data-testid="textbox"]')
+    setNativeValue(img2img_prompt, paramsObj['img2img_prompt']);
+  }
+  if(paramsObj['img2img_src']){
+    let sideload_input = getEL('#imgtimg_sideload [data-testid="textbox"]')
+    setNativeValue(sideload_input, paramsObj['img2img_src']);
+    getEL('#img2img_sideloadbtn').click();
   }
   
 
@@ -234,7 +241,22 @@ let injectParamsFromUrl = async () => {
       getEL('#img2img_edit_btn')?.click()
 
     }
-  }, 250)
+  }, 500)
+}
+
+
+let setNativeValue = function(element, value) {
+  let lastValue = element.value;
+  element.value = value;
+  let event = new Event("input", { target: element, bubbles: true });
+  // React 15
+  event.simulated = true;
+  // React 16
+  let tracker = element._valueTracker;
+  if (tracker) {
+    tracker.setValue(lastValue);
+  }
+  element.dispatchEvent(event);
 }
 
 let init = async function(){
