@@ -12,7 +12,7 @@ def draw_gradio_ui(opt, img2img=lambda x: x, txt2img=lambda x: x,imgproc=lambda 
 
     with gr.Blocks(css=css(opt), analytics_enabled=False, title="Stable Diffusion WebUI") as demo:
         with gr.Tabs(elem_id='tabss') as tabs:
-            with gr.TabItem("Text-to-Image", id='txt2img_tab'):
+            with gr.TabItem("Text-to-Image", id='txt2img_tab', elem_id='txt2img_tab'):
                 with gr.Row(elem_id="prompt_row"):
                     txt2img_prompt = gr.Textbox(label="Prompt",
                                                 elem_id='prompt_input',
@@ -26,9 +26,9 @@ def draw_gradio_ui(opt, img2img=lambda x: x, txt2img=lambda x: x,imgproc=lambda 
                 with gr.Row(elem_id='body').style(equal_height=False):
                     with gr.Column():
                         txt2img_width = gr.Slider(minimum=64, maximum=1024, step=64, label="Width",
-                                                  value=txt2img_defaults["width"])
+                                                  value=txt2img_defaults["width"], elem_id="txt2img_width")
                         txt2img_height = gr.Slider(minimum=64, maximum=1024, step=64, label="Height",
-                                                   value=txt2img_defaults["height"])
+                                                   value=txt2img_defaults["height"], elem_id="txt2img_height")
                         txt2img_cfg = gr.Slider(minimum=-40.0, maximum=30.0, step=0.5,
                                                 label='Classifier Free Guidance Scale (how strongly the image should follow the prompt)',
                                                 value=txt2img_defaults['cfg_scale'], elem_id='cfg_slider')
@@ -142,7 +142,7 @@ def draw_gradio_ui(opt, img2img=lambda x: x, txt2img=lambda x: x,imgproc=lambda 
                 )
 
 
-            with gr.TabItem("Image-to-Image Unified", id="img2img_tab"):
+            with gr.TabItem("Image-to-Image Unified", id="img2img_tab", elem_id="img2img_tab"):
                 with gr.Row(elem_id="prompt_row"):
                     img2img_prompt = gr.Textbox(label="Prompt",
                                                 elem_id='img2img_prompt_input',

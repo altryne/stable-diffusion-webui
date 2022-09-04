@@ -42,7 +42,7 @@ def mock_processing(prompt: str, seed: str, width: int, height: int, steps: int,
             k, v in args_and_names.items()]
     }
     images = []
-    for i in range(batch_count):
+    for i in range(int(batch_count)):
         images.append(f"http://placeimg.com/{width}/{height}/any")
     return images, int(time.time()), info, 'random output'
 
@@ -63,15 +63,16 @@ def txt2img(*args, **kwargs):
 
 
 def img2img(*args, **kwargs):
+    print(args)
     return mock_processing(
         prompt=args[0],
-        seed=args[12],
+        seed=args[13],
         width=args[14],
-        height=args[13],
+        height=args[15],
         steps=args[5],
-        cfg_scale=args[10],
-        sampler=args[6],
-        batch_count=args[9]
+        cfg_scale=args[12],
+        sampler=args[7],
+        batch_count=args[10]
     )
 
 
@@ -261,4 +262,4 @@ demo = draw_gradio_ui(opt,
                       )
 
 # demo.queue()
-demo.launch(share=False, debug=True)
+demo.launch(share=False, debug=False, inbrowser=False) 

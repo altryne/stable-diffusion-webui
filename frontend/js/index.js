@@ -1,8 +1,11 @@
 window.SD = (() => {
+  // Altryne : I hate classes, this calls the init function, everyting else is there. 
+ 
   /*
    * Painterro is made a field of the SD global object
    * To provide convinience when using w() method in css_and_js.py
    */
+  
   class PainterroClass {
     static isOpen = false;
     static async init ({ x, toId }) {
@@ -111,6 +114,8 @@ window.SD = (() => {
   class SDClass {
     el = new ElementCache();
     Painterro = PainterroClass;
+
+    
     moveImageFromGallery ({ x, fromId, toId }) {
       if (!Array.isArray(x) || x.length === 0) return;
 
@@ -177,7 +182,67 @@ window.SD = (() => {
       const selected = gallery.querySelector(`.\\!ring-2`);
       return selected ? [...selected.parentNode.children].indexOf(selected) : 0;
     }
+
+
+    async getParams() {
+      console.log('fuck this dude man')
+    }
   }
 
+
   return new SDClass();
+
+  
 })();
+
+/* 
+Everything above should die a slow fiery death ,who the fuck needs classes in JS? 
+What is this, CS 101?? 
+Fucking init() function and you're good
+*/
+let getEL = (selector) => document.querySelector('gradio-app').shadowRoot.querySelector(selector);
+
+let injectParamsFromUrl = async () => {
+  debugger
+  // turn query params into an object
+  let params = new URLSearchParams(window.location.search);
+  // iterate over the params and add to object
+  let paramsObj = {};
+  for (let p of params) {
+    paramsObj[p[0]] = p[1];
+  }
+
+  if(paramsObj['active_tab']){
+    getEL(`#tabss>div>button:nth-child(${paramsObj['active_tab']})`).click();
+    await new Promise(resolve => setTimeout(resolve, 250));
+  }
+
+  if(paramsObj['txt2img_prompt']){
+    getEL('#prompt_input [data-testid="textbox"]').value = paramsObj['img2img_prompt'];
+  }
+
+  if(paramsObj['img2img_prompt']){
+    getEL('#img2img_prompt_input [data-testid="textbox"]').value = paramsObj['img2img_prompt'];
+  }
+  
+
+  //Autosubmit
+  window.setTimeout(() => {
+    if(paramsObj['autosubmit']){
+      getEL('#generate')?.click()
+      getEL('#img2img_mask_btn')?.click()
+      getEL('#img2img_edit_btn')?.click()
+
+    }
+  }, 250)
+}
+
+let init = async function(){
+  // this stuff runs when our machine runs
+  console.log('init happened yay') 
+  
+  // inject params from URL
+  injectParamsFromUrl()
+}
+
+init()
